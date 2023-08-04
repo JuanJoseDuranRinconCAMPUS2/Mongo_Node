@@ -1,21 +1,18 @@
+
+
 use("db_limit_mongo");
+console.log(Cant_Collections);
+
+use("db_limit_mongo");
+// de hecho FUNCIONA,AAAAAAAAAA
 db.createCollection("usuario", {
     capped: true,
     size: 690,
     validationAction: "error",
     validationLevel: "strict",
-    // intento fallido de validacion
-    // validationAction: {
-    //     $expr:
-    //        {
-    //           $lt: [
-    //             db.usuario.countDocuments(),
-    //              5
-    //           ]
-    //        }
-    //  },
     max: 5
 });
+
 
 use("db_limit_mongo");
 db.usuario.insertMany([
@@ -49,6 +46,19 @@ db.usuario.insertMany([
         "edad": 43
     }
 ]);
+db.runCommand({
+    collMod: "usuario",
+    validator: {
+        $expr:{
+            $lt: [
+                db.usuario.countDocuments(),
+                5
+            ]
+        }
+     },
+    validationLevel: "strict",
+    validationAction: "error"
+});
 
 use("db_limit_mongo");
 db.usuario.insertOne(

@@ -1,0 +1,60 @@
+use("db_limit_mongo");
+db.createCollection("usuario", {
+    capped: true,
+    size: 690,
+    validationAction: "error",
+    validationLevel: "strict",
+    // intento fallido de validacion
+    // validationAction: {
+    //     $expr:
+    //        {
+    //           $lt: [
+    //             db.usuario.countDocuments(),
+    //              5
+    //           ]
+    //        }
+    //  },
+    max: 5
+});
+
+use("db_limit_mongo");
+db.usuario.insertMany([
+    {
+        _id: ObjectId(101),
+        "nombre": "aaaaaaaaaaaaaaaaaaaa",
+        "edad": 12
+    },
+    {
+        _id: ObjectId(102),
+        "nombre": "bbbbbbbbbbbbbbbbbbbb",
+        "edad": 13
+    },
+    {
+        _id: ObjectId(103),
+        "nombre": "cccccccccccccccccccc",
+        "edad": 41
+    },
+    {
+        _id: ObjectId(104),
+        "nombre": "dddddddddddddddddddd",
+        "edad": 21
+    },{
+        _id: ObjectId(105),
+        "nombre": "eeeeeeeeeeeeeeeeeeee",
+        "edad": 14
+    },
+    {
+        _id: ObjectId(106),
+        "nombre": "ffffffffffffffffffff",
+        "edad": 43
+    }
+]);
+
+use("db_limit_mongo");
+db.usuario.insertOne(
+    {
+        _id: ObjectId(106),
+        "nombre": "gggggggggggggggggggg",
+        "edad": 50
+    }
+);

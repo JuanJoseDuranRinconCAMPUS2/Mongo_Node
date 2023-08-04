@@ -1,11 +1,25 @@
 import rateLimit from "express-rate-limit";
 
-export let configGet = () => {
+export let limitGrt = () => {
     return rateLimit({
         windowMs: 15 * 1000, // 15 sg
-        max: 5, // Limit each IP to 5 requests per `window` (here, per 15 sg)
-        standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-        legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-        message: 'Se te acabo el tiempo pi pi pi'
+        max: 5, 
+        standardHeaders: true, 
+        legacyHeaders: false, 
+        skip: (req, res) =>{
+            if(req.headers["content-length"]>91){
+                res.status(413).send({
+                    status: 413,
+                    message: "El tamaño es incorrecto"
+                });
+                return true;
+            }
+        },
+        message: (req,res)=>{
+            res.status(429).send({
+                status: 429,
+                message: 'Se te acabo el tiempo pi pi pi'
+            })
+        }
     })
 }

@@ -7,10 +7,10 @@ dotnev.config();
 const Api = express();
 Api.use(express.json());
 
-import { Collection } from 'mongodb';
-import { con } from './db/atlas.js';
+// import { Collection } from 'mongodb';
+// import { con } from './db/atlas.js';
 
-let db = await con();
+// let db = await con();
 
 // ════════ ⋆★⋆ ════════
 Api.use('/Campus', AppCampus)

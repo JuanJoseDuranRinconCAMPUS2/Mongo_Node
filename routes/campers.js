@@ -1,15 +1,23 @@
 import { Router } from "express";
-import {configGet} from '../middleware/limit.js';
+import {limitGrt} from '../middleware/limit.js';
 import bodyParser  from 'body-parser';
+import { Collection, ObjectId } from 'mongodb';
+import { con } from '../db/atlas.js';
 
 const AppCampus = Router();
+let db = await con();
 
-AppCampus.use(configGet());
-AppCampus.use(bodyParser.json({ limit: '400B' }));
+AppCampus.use(limitGrt());
 
-AppCampus.get('/', (req, res) =>{
-    console.log(req.headers);
-    res.send("Wenas cabros")
+AppCampus.get('/', async (req, res) =>{
+    if(!req.rateLimit) return;
+
+    let { id } = req.body;
+    let usuario = db.collection("usuario");
+    // let result = await usuario.find({_id: new ObjectId(id)}).toArray();
+    let result = await usuario.find({}).toArray();
+    res.send(result);
+
 })
 
 export default AppCampus;

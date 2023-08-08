@@ -8,6 +8,18 @@ use("db_limit_mongo");
 db.createCollection("usuario", {
     capped: true,
     size: 690,
+    validator: {
+        $jsonSchema: {
+           bsonType: "object",
+           title: "User Validation",
+           properties: {
+                "nombre": { "bsonType": "string" , 
+                description: "The nombre must be of type string"},
+                "edad": { "bsonType": "number" , 
+                description: "The edad must be of type number"}              
+           }
+        }
+    },
     validationAction: "error",
     validationLevel: "strict",
     max: 5
@@ -64,7 +76,7 @@ use("db_limit_mongo");
 db.usuario.insertOne(
     {
         _id: ObjectId(106),
-        "nombre": "gggggggggggggggggggg",
-        "edad": 50
+        "nombre": "maria",
+        "edad": 4
     }
 );
